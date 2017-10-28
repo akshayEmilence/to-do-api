@@ -67,12 +67,30 @@ app.delete('/todos/:id', function (req, res) {
 	var matchedTodo = _.findWhere(todos, {id:todoId});
 
 	if(!matchedTodo) {
-		res.status(404).json({"error " : "no todo item"})
+		res.status(404).json({"error " : "no todo item !"})
 	} else {
 		todos = _.without(todos, matchedTodo) ;
 		res.json(matchedTodo);
 	}
 });
+
+// PUT /todos/:id
+app.put('/todos/:id', function (req, res) {
+	var body = _.pick(req.body, 'description', 'completed');
+	var validAttributes = {};
+
+	if(body.hasOwnProperty('completed') && _.isBoolean(body.completed)){
+		validAttributes.completed = body.completed;
+	} else if(body.hasOwnProperty('completed')) {
+		return res.status(400).send();
+	}else{
+		//never provided attribute
+	}
+	//body.hasOwnProperty('completed')
+});
+
+
+
 //Get /todo/987/:id
 
 app.listen(PORT , function () {  
